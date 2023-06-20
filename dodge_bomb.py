@@ -10,6 +10,14 @@ delta = {
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0),
 }
+# こうかとんの回転用の辞書
+#kk_delta = {
+#    pg.K_UP: pg.transform.rotozoom(0,-5),
+#    pg.K_DOWN: pg.transform.rotozoom(0,+5),
+#    pg.K_LEFT: pg.transform.rotozoom(-5,0),
+#    pg.K_RIGHT :pg.transform.rotozoom(+5,0),
+#}
+
 
 
 def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
@@ -45,6 +53,8 @@ def main():
     # 爆弾Rectの中心座標を乱数で指定する
     bd_rct.center = x, y 
     vx, vy = +5, +5  # 練習２
+    #accs = [a for a in range(1,11)]
+    #avx, avy = vx*accs, vy*accs
 
     clock = pg.time.Clock()
     tmr = 0
@@ -59,7 +69,7 @@ def main():
         for k, mv in delta.items():
             if key_lst[k]: 
                 sum_mv[0] += mv[0]
-                sum_mv[1] += mv[1]
+                sum_mv[1] += mv[1]        
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
