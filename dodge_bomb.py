@@ -20,19 +20,20 @@ def main():
     y = random.randint(0,HEIGHT)
     bd_rct = bd_img.get_rect()
     bd_rct.center = x, y # 爆弾Rectの中心座標を乱数で指定する
+    vx, vy = +10, +10
     tmr = 0
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-
+            
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
         screen.blit(bd_img,bd_rct)
         
         pg.display.update()
         tmr += 1
-        clock.tick(10)
+        clock.tick(50)
 
 
 if __name__ == "__main__":
