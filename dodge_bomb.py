@@ -10,14 +10,6 @@ delta = {
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0),
 }
-# こうかとんの回転用の辞書
-#kk_delta = {
-#    pg.K_UP: pg.transform.rotozoom(0,-5),
-#    pg.K_DOWN: pg.transform.rotozoom(0,+5),
-#    pg.K_LEFT: pg.transform.rotozoom(-5,0),
-#    pg.K_RIGHT :pg.transform.rotozoom(+5,0),
-#}
-
 
 
 def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
@@ -40,6 +32,7 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_img_r = pg.transform.flip(kk_img,True, False)
     # こうかとんSurface（kk_img）からこうかとんRect（kk_rct）を抽出する
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
@@ -53,8 +46,18 @@ def main():
     # 爆弾Rectの中心座標を乱数で指定する
     bd_rct.center = x, y 
     vx, vy = +5, +5  # 練習２
-    #accs = [a for a in range(1,11)]
-    #avx, avy = vx*accs, vy*accs
+
+    kk_delta = {
+    (0,-5):  pg.transform.rotozoom(kk_img_r, 90, 2.0),
+    (5,-5):  pg.transform.rotozoom(kk_img_r, 45, 2.0),
+    (5,0):  pg.transform.rotozoom(kk_img_r, 0, 2.0),
+    (5,5):  pg.transform.rotozoom(kk_img_r, 315, 2.0),
+    (0,5):  pg.transform.rotozoom(kk_img_r, 270, 2.0),
+    (-5,5):  pg.transform.rotozoom(kk_img, 45, 2.0),
+    (-5,0):  pg.transform.rotozoom(kk_img, 0, 2.0),
+    (-5,-5):  pg.transform.rotozoom(kk_img, 315, 2.0),
+    (0,0): pg.transform.rotozoom(kk_img,0,2.0),
+    }
 
     clock = pg.time.Clock()
     tmr = 0
@@ -69,7 +72,8 @@ def main():
         for k, mv in delta.items():
             if key_lst[k]: 
                 sum_mv[0] += mv[0]
-                sum_mv[1] += mv[1]        
+                sum_mv[1] += mv[1] 
+        kk_img = kk_delta[tuple(sum_mv)]       
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
